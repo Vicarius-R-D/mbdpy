@@ -1,0 +1,13 @@
+# To use:
+#
+#   $ conda env create -f environment.yml
+#   $ conda activate mbdpy-dev
+
+name: mbdpy-dev
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - PyQt6=6.4.0
+  - pytest
+  - sphinx
