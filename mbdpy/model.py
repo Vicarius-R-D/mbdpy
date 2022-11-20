@@ -1,4 +1,6 @@
+import json
 import numpy as np
+
 
 class Model:
     """
@@ -26,6 +28,20 @@ class Model:
         self.last_port_id += 1
 
         return self.last_port_id
+    
+    def save_json(self):
+        """
+        Convert and save the model into a json file.
+        """
+        model = self
+
+        for i, block in enumerate(model.blocks):
+            model.blocks[i] = vars(block)
+        
+        model_dict = vars(model)
+
+        with open('models/' + model.name + '.json', 'w') as model_file:
+            json.dump(model_dict, model_file, indent=4)
 
     def run(self, time: float, dt: float) -> None:
         """
@@ -37,7 +53,7 @@ class Model:
         new_blocks = []
         self.outputs = []
         self.outputs_to = []
-        self.time = np.linspace(0, time, int((time + dt)/dt))
+        self.time = list(np.linspace(0, time, int((time + dt)/dt), dtype=float))
 
         for block in self.blocks:
             self.outputs.append([])

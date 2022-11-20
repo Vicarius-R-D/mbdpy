@@ -78,4 +78,4 @@ class Sum(Block):
 
     def evaluate(self, inputs: list[float]) -> float:
 
-        return np.sum(np.array(inputs))
+        return float(np.sum(np.array(inputs)))
