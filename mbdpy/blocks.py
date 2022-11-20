@@ -5,6 +5,18 @@ import numpy as np
 class Block:
     """
     Base block class.
+    Attributes:
+        input_id (list[int]): list containig unique id for each port on the block.
+        output_to (int): integer corresponding to the input_id of the target port.
+        input_buffer (list): list that will contain the value of input at each iteration.
+        coord (tuple[int, int]): tuple containing the center coordinates to display the block.
+        dimension (tuple[int, int]): tuple containing the width and height of the displayed block.
+        label (str): label printed on the block.
+    Methods:
+        connect_output
+        evaluate
+        move
+        aspect
     """
     def __init__(self):
         pass
