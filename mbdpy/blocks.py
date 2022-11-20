@@ -6,6 +6,7 @@ class Block:
     """
     Base block class.
     Attributes:
+        type (str): type name of the block.
         input_id (list[int]): list containig unique id for each port on the block.
         output_to (int): integer corresponding to the input_id of the target port.
         input_buffer (list): list that will contain the value of input at each iteration.
@@ -40,6 +41,7 @@ class Constant(Block):
     Block that raise a constant value.
     """
     def __init__(self, value: float):
+        self.type = self.__class__.__name__
         self.input_id = []
         self.input_buffer = [None]
         self.value = value
@@ -56,6 +58,7 @@ class Terminator(Block):
     Block without output to terminate a signal.
     """
     def __init__(self, model: Model):
+        self.type = self.__class__.__name__
         self.input_id = [model.create_port_id()]
         self.input_buffer = [None]
         self.output_to = None
@@ -67,6 +70,7 @@ class Sum(Block):
     Block that sum multiple inputs.
     """
     def __init__(self, n_input, model: Model):
+        self.type = self.__class__.__name__
         self.input_id = []
         self.input_buffer = []
         self.output_to = None
