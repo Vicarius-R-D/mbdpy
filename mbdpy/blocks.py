@@ -18,6 +18,10 @@ class Block:
     def move(self, coord: tuple[int, int]) -> None:
         self.coord = coord
 
+    def aspect(self, dimension: tuple[int, int], label: str) -> None:
+        self.dimension = dimension
+        self.label = label
+
 
 class Constant(Block):
     """
@@ -28,6 +32,7 @@ class Constant(Block):
         self.input_buffer = [None]
         self.value = value
         self.output_to = None
+        self.aspect((10, 10), str(self.value))
 
     def evaluate(self, inputs: list) -> float:
 
@@ -42,6 +47,7 @@ class Terminator(Block):
         self.input_id = [model.create_port_id()]
         self.input_buffer = [None]
         self.output_to = None
+        self.aspect((10, 10), '>|')
 
 
 class Sum(Block):
@@ -52,6 +58,7 @@ class Sum(Block):
         self.input_id = []
         self.input_buffer = []
         self.output_to = None
+        self.aspect((10, 10), '&Sigma')
 
         for _ in range(n_input):
             self.input_id.append(model.create_port_id())
