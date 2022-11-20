@@ -1,22 +1,39 @@
 import numpy as np
 
 class Model:
-
+    """
+    Model class.
+    """
     def __init__(self, name: str):
         self.name = name
         self.blocks = []
         self.last_port_id = 0
 
-    def add_block(self, block):
+    def add_block(self, block) -> None:
+        """
+        Add a block to the model.
+        Args:
+            block (Block): instance of a block.
+        """
         self.blocks.append(block)
 
     def create_port_id(self) -> int:
+        """
+        Create a new port id.
+        Returns:
+            port_id (int): new port id created
+        """
         self.last_port_id += 1
 
         return self.last_port_id
 
-    def run(self, time: float, dt: float):
-
+    def run(self, time: float, dt: float) -> None:
+        """
+        Run the model.
+        Args:
+            time (float): total simulation time in sec.
+            dt (float): timestep of the simulation in sec.
+        """
         new_blocks = []
         self.outputs = []
         self.outputs_to = []
