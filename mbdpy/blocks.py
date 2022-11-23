@@ -1,6 +1,5 @@
-from .model import Model
-
 import numpy as np
+
 
 class Block:
     """
@@ -46,7 +45,7 @@ class Constant(Block):
         self.input_buffer = [None]
         self.value = value
         self.output_to = None
-        self.aspect((10, 10), str(self.value))
+        self.aspect((30, 30), str(self.value))
 
     def evaluate(self, inputs: list) -> float:
 
@@ -57,24 +56,24 @@ class Terminator(Block):
     """
     Block without output to terminate a signal.
     """
-    def __init__(self, model: Model):
+    def __init__(self, model):
         self.type = self.__class__.__name__
         self.input_id = [model.create_port_id()]
         self.input_buffer = [None]
         self.output_to = None
-        self.aspect((10, 10), '>|')
+        self.aspect((30, 30), '>|')
 
 
 class Sum(Block):
     """
     Block that sum multiple inputs.
     """
-    def __init__(self, n_input, model: Model):
+    def __init__(self, n_input, model):
         self.type = self.__class__.__name__
         self.input_id = []
         self.input_buffer = []
         self.output_to = None
-        self.aspect((10, 10), '&Sigma')
+        self.aspect((30, 30), '+')
 
         for _ in range(n_input):
             self.input_id.append(model.create_port_id())
@@ -83,3 +82,13 @@ class Sum(Block):
     def evaluate(self, inputs: list[float]) -> float:
 
         return float(np.sum(np.array(inputs)))
+
+
+def get_block_class(block_type: str):
+    # TODO automate this
+    if block_type == 'Constant':
+        return Constant
+    if block_type == 'Terminator':
+        return Terminator
+    if block_type == 'Sum':
+        return Sum
