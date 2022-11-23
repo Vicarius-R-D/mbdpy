@@ -1,12 +1,14 @@
 import json
 import numpy as np
 
+from blocks import get_block_class
+
 
 class Model:
     """
     Model class.
     """
-    def __init__(self, name: str):
+    def __init__(self, name='blank_model'):
         self.name = name
         self.blocks = []
         self.last_port_id = 0
@@ -42,6 +44,26 @@ class Model:
 
         with open('models/' + model.name + '.json', 'w') as model_file:
             json.dump(model_dict, model_file, indent=4)
+
+    def load_json(self, filename):
+        """
+        Load a json file and convert the data into an instance of the class.
+        """
+        with open(filename) as json_file:
+            json_model = json.load(json_file)
+
+        for key in json_model:
+            setattr(self, key, json_model[key])
+
+        for i, block in enumerate(self.blocks):
+            block_class = get_block_class(block['type'])
+
+            for key in block:
+                setattr(block_class, key, block[key])
+
+            self.blocks[i] = block_class
+
+        return self
 
     def run(self, time: float, dt: float) -> None:
         """
