@@ -17,8 +17,11 @@ class Gui:
     def __init__(self) -> None:
         self.window = tk.Tk()
         self.frm_menu = tk.Frame(master=self.window, width=1280, height=60, bg=C.DARKGREEN.value)
-        self.btn_load_model = tk.Button(master=self.frm_menu, width=10, command=self.load_model)
+        self.btn_load_model = tk.Button(master=self.frm_menu, width=10, command=self.load_model, text='Load Model')
         self.btn_load_model.pack(side=tk.LEFT)
+        self.str_model_name = tk.StringVar(master=self.window, value='models/trial_model.json')
+        self.ent_model_name = tk.Entry(master=self.frm_menu, width=50, textvariable=self.str_model_name)
+        self.ent_model_name.pack(side=tk.LEFT)
         self.frm_menu.pack(fill=tk.X)
 
         self.frm_model_container = tk.Frame(master=self.window, width=1280, height=660, bg=C.GRAY.value)
@@ -28,10 +31,10 @@ class Gui:
         self.window.mainloop()
 
     def load_model(self) -> None:
-        model = Model().load_json('models/trial_model.json')  # TODO add the file name in the gui 
-        
+        model = Model().load_json(self.ent_model_name.get())
+
         for block in model.blocks:
-            btn_block = tk.Button(master=self.frm_model_container)
+            btn_block = tk.Button(master=self.frm_model_container, text=block.label)
             btn_block.place(x=block.coord[0],
                             y=block.coord[1],
                             width=block.dimension[0],
