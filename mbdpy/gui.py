@@ -13,24 +13,37 @@ class C(Enum):
 
 
 class Gui:
-
+    """
+    GUI class.
+    """
     def __init__(self) -> None:
         self.window = tk.Tk()
+
         self.frm_menu = tk.Frame(master=self.window, width=1280, height=60, bg=C.DARKGREEN.value)
+
         self.btn_load_model = tk.Button(master=self.frm_menu, width=10, command=self.load_model, text='Load Model')
         self.btn_load_model.pack(side=tk.LEFT)
+
         self.str_model_name = tk.StringVar(master=self.window, value='models/trial_model.json')
+
         self.ent_model_name = tk.Entry(master=self.frm_menu, width=50, textvariable=self.str_model_name)
         self.ent_model_name.pack(side=tk.LEFT)
+
         self.frm_menu.pack(fill=tk.X)
 
         self.frm_model_container = tk.Frame(master=self.window, width=1280, height=660, bg=C.GRAY.value)
         self.frm_model_container.pack(fill=tk.BOTH, expand=True)
 
     def run(self) -> None:
+        """
+        Run the application GUI.
+        """
         self.window.mainloop()
 
     def load_model(self) -> None:
+        """
+        Load the model from the GUI load model button.
+        """
         model = Model().load_json(self.ent_model_name.get())
 
         for block in model.blocks:
@@ -38,7 +51,8 @@ class Gui:
             btn_block.place(x=block.coord[0],
                             y=block.coord[1],
                             width=block.dimension[0],
-                            height=block.dimension[1])
+                            height=block.dimension[1],
+                            anchor=tk.CENTER)
 
 
 if __name__ == '__main__':
