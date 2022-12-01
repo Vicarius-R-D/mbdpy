@@ -1,7 +1,7 @@
 import json
 import numpy as np
 
-from blocks import get_block_class
+from blocks import get_block_class # must be used .blocks
 
 
 class Model:
@@ -31,7 +31,7 @@ class Model:
 
         return self.last_port_id
     
-    def save_json(self):
+    def save_json(self) -> None:
         """
         Convert and save the model into a json file.
         """
@@ -45,7 +45,7 @@ class Model:
         with open('models/' + model.name + '.json', 'w') as model_file:
             json.dump(model_dict, model_file, indent=4)
 
-    def load_json(self, filename):
+    def load_json(self, filename: str):
         """
         Load a json file and convert the data into an instance of the class.
         """
@@ -58,11 +58,19 @@ class Model:
         for i, block in enumerate(self.blocks):
             block_class = get_block_class(block['type'])
 
+            if block['type'] == 'Constant':
+                block_class = block_class(block['value'])
+            if block['type'] == 'Terminator':
+                block_class = block_class(self)
+            if block['type'] == 'Sum':
+                block_class = block_class(len(block['input_id']), self)
+            
             for key in block:
                 setattr(block_class, key, block[key])
 
             self.blocks[i] = block_class
-
+            del block_class
+            
         return self
 
     def run(self, time: float, dt: float) -> None:
