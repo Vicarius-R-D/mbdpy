@@ -10,8 +10,8 @@
             "value": 2,
             "output_to": 2,
             "dimension": [
-                30,
-                30
+                40,
+                40
             ],
             "label": "2",
             "coord": [
@@ -28,8 +28,8 @@
             "value": 1,
             "output_to": 1,
             "dimension": [
-                30,
-                30
+                40,
+                40
             ],
             "label": "1",
             "coord": [
@@ -49,8 +49,8 @@
             ],
             "output_to": null,
             "dimension": [
-                30,
-                30
+                40,
+                60
             ],
             "label": "+",
             "coord": [
@@ -68,8 +68,8 @@
             ],
             "output_to": null,
             "dimension": [
-                30,
-                30
+                40,
+                40
             ],
             "label": ">|",
             "coord": [
