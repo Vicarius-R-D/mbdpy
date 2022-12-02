@@ -45,7 +45,7 @@ class Constant(Block):
         self.input_buffer = [None]
         self.value = value
         self.output_to = None
-        self.aspect((30, 30), str(self.value))
+        self.aspect((40, 40), str(self.value))
 
     def evaluate(self, inputs: list) -> float:
 
@@ -61,7 +61,7 @@ class Terminator(Block):
         self.input_id = [model.create_port_id()]
         self.input_buffer = [None]
         self.output_to = None
-        self.aspect((30, 30), '>|')
+        self.aspect((40, 40), '>|')
 
 
 class Sum(Block):
@@ -73,7 +73,7 @@ class Sum(Block):
         self.input_id = []
         self.input_buffer = []
         self.output_to = None
-        self.aspect((30, 30), '+')
+        self.aspect((40, 20*(n_input + 1)), '+')
 
         for _ in range(n_input):
             self.input_id.append(model.create_port_id())
