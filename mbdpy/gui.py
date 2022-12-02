@@ -1,10 +1,24 @@
 import tkinter as tk
+import matplotlib.pyplot as plt
 
 from enum import Enum
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.backends.backend_tkagg import NavigationToolbar2Tk
+
 from .model import Model
+
+
+WINDOW_W = 1280
+WINDOW_H = 720
+MENU_H = 60
+BODY_H = WINDOW_H - MENU_H
+RESULTS_LOGGER_W = 500
+MODEL_CONTAINER_W = WINDOW_W - RESULTS_LOGGER_W
+
 
 class C(Enum):
     GRAY = '#2A2D34'
+    LIGHTGRAY = '#525866'
     DARKGREEN = '#218380'
     LIGHTGREEN = '#8FD694'
     YELLOW = '#EEB902'
@@ -24,7 +38,10 @@ class Gui:
         self.window.title('MBDpy - ' + self.model.name + '*')
 
         # top menu frame
-        self.frm_menu = tk.Frame(master=self.window, width=1280, height=60, bg=C.DARKGREEN.value)
+        self.frm_menu = tk.Frame(master=self.window,
+                                 width=WINDOW_W,
+                                 height=MENU_H,
+                                 bg=C.DARKGREEN.value)
 
         # save model button
         self.btn_save_model = tk.Button(master=self.frm_menu,
@@ -53,13 +70,32 @@ class Gui:
                                        bd=0)
         self.ent_model_name.pack(side=tk.LEFT, padx=5)
 
+        # run button
+        self.btn_run_model = tk.Button(master=self.frm_menu,
+                                       width=5,
+                                       height=2,
+                                       command=self.run_model,
+                                       text='run',
+                                       bd=0)
+        self.btn_run_model.pack(side=tk.RIGHT)
+
+        # pack top menu frame
         self.frm_menu.pack(fill=tk.X)
 
         # model container frame
         self.frm_model_container = tk.Frame(master=self.window,
-                                            width=1280,
-                                            height=660,
+                                            width=MODEL_CONTAINER_W,
+                                            height=BODY_H,
                                             bg=C.GRAY.value)
+
+        # results logger frame
+        self.frm_results_logger = tk.Frame(master=self.window,
+                                           width=RESULTS_LOGGER_W,
+                                           height=BODY_H,
+                                           bg=C.LIGHTGRAY.value)
+        self.frm_results_logger.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # pack model container frame                               
         self.frm_model_container.pack(fill=tk.BOTH, expand=True)
 
     def run(self) -> None:
@@ -91,3 +127,32 @@ class Gui:
         """
         self.model.save_json()
         self.window.title('MBDpy - ' + self.model.name)
+
+    def run_model(self) -> None:
+        """
+        Run the simulation with the actual model and call the plot function.
+        """
+        self.model.run(10, 0.1)  # TODO parameters controllable from the GUI
+        self.plot_channel()
+
+    def plot_channel(self) -> None:
+        """
+        PLot the desired channel.
+        """
+        t = self.model.time
+        x = self.model.outputs[0]  # TODO choose which channel has to be plotted
+        
+        fig = plt.Figure(figsize=(5, 5), dpi=100)
+        fig.patch.set_facecolor(C.LIGHTGRAY.value)
+        ax1 = fig.add_subplot(111)
+        ax1.plot(t, x)
+        ax1.set_title('Simulation Results')
+        ax1.set_xlabel('time [s]')
+        ax1.grid(True)
+
+        self.fig_results = FigureCanvasTkAgg(fig, self.frm_results_logger)
+        
+        toolbar = NavigationToolbar2Tk(self.fig_results, self.frm_results_logger)
+        toolbar.update()
+
+        self.fig_results.get_tk_widget().pack(side=tk.BOTTOM)
