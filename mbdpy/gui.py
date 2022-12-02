@@ -18,11 +18,14 @@ class Gui:
     def __init__(self) -> None:
         self.model = Model()
         self.window = tk.Tk()
-        self.window.title('MBDpy - ' + self.model.name)
+        self.window.title('MBDpy - ' + self.model.name + '*')
 
         self.frm_menu = tk.Frame(master=self.window, width=1280, height=60, bg=C.DARKGREEN.value)
 
-        self.btn_load_model = tk.Button(master=self.frm_menu, width=10, command=self.load_model, text='Load Model')
+        self.btn_save_model = tk.Button(master=self.frm_menu, width=10, height=2, command=self.save_model, text='Save Model')
+        self.btn_save_model.pack(side=tk.LEFT)
+
+        self.btn_load_model = tk.Button(master=self.frm_menu, width=10, height=2, command=self.load_model, text='Load Model')
         self.btn_load_model.pack(side=tk.LEFT)
 
         self.str_model_name = tk.StringVar(master=self.window, value='models/trial_model.json')
@@ -55,6 +58,13 @@ class Gui:
                             width=block.dimension[0],
                             height=block.dimension[1],
                             anchor=tk.CENTER)
+
+    def save_model(self) -> None:
+        """
+        Save the model from the GUI save model button.
+        """
+        self.model.save_json()
+        self.window.title('MBDpy - ' + self.model.name)
 
 
 if __name__ == '__main__':
