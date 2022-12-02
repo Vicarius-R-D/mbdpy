@@ -1,7 +1,7 @@
 import json
 import numpy as np
 
-from blocks import get_block_class # must be used .blocks
+from .blocks import get_block_class
 
 
 class Model:
