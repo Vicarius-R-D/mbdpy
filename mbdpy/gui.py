@@ -1,8 +1,7 @@
 import tkinter as tk
 
 from enum import Enum
-from model import Model # must be used .model
-
+from .model import Model
 
 class C(Enum):
     GRAY = '#2A2D34'
@@ -17,7 +16,9 @@ class Gui:
     GUI class.
     """
     def __init__(self) -> None:
+        self.model = Model()
         self.window = tk.Tk()
+        self.window.title('MBDpy - ' + self.model.name)
 
         self.frm_menu = tk.Frame(master=self.window, width=1280, height=60, bg=C.DARKGREEN.value)
 
@@ -44,9 +45,10 @@ class Gui:
         """
         Load the model from the GUI load model button.
         """
-        model = Model().load_json(self.ent_model_name.get())
+        self.model = Model().load_json(self.ent_model_name.get())
+        self.window.title('MBDpy - ' + self.model.name)
 
-        for block in model.blocks:
+        for block in self.model.blocks:
             btn_block = tk.Button(master=self.frm_model_container, text=block.label)
             btn_block.place(x=block.coord[0],
                             y=block.coord[1],
